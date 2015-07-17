@@ -1,0 +1,5 @@
+name = Masquerade float block
+description = This module provides the float masquerade block to switch users
+dependencies[] = masquerade
+package = development
+core = 7.x
