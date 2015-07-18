@@ -36,7 +36,7 @@ function masquerade_float_block_page_build(&$page) {
       $block['content'] = drupal_render($block['content']);
 
       $data = array(
-        'masquerade_float_block' => array('block' => $block)
+        'masquerade_float_block' => array('block' => $block),
       );
 
       $main['#attached']['js'][] = array('data' => $data, 'type' => 'setting');

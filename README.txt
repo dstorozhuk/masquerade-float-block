@@ -24,8 +24,8 @@ Also, you can control appearing of the Masquerade block in two ways:
   - 1 enable Masquerade block on all pages
   - 0 disable Masquerade block on all pages
 2. set the "masquerade_float_block_visible" variable to 1 or 0.
-  ex.: variable_set('masquerade_float_block_visible', 1) - enable Masquerade block
-  in settings.php:
+  ex.: variable_set('masquerade_float_block_visible', 1) - enable Masquerade
+  block in settings.php:
      $cong['masquerade_float_block_visible'] = 0 - disable Masquerade block
 
 TODO:
