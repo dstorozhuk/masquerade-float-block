@@ -1,14 +1,16 @@
 <?php
 
 /**
- * @file masquerade_float_block.module
- * TODO: Enter file description here.
+ * @file
+ * File contains JS float block initialization.
+ *
+ * TODO: Add admin UI if there this feature will be requested.
  */
 
 /**
- * Implements hook_init().
+ * Implements hook_page_build().
  */
-function masquerade_float_block_init() {
+function masquerade_float_block_page_build(&$page) {
   $get = drupal_get_query_parameters();
   if (isset($get['mfb_show'])) {
     if (in_array($get['mfb_show'], array(1, 0))) {
@@ -39,5 +41,3 @@ function masquerade_float_block_init() {
     }
   }
 }
-
-
