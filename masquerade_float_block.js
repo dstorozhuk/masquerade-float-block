@@ -119,7 +119,6 @@
         switcher.html(t('Show masquerade block'));
         $(this).append(switcher);
 
-
         if (dialog_state == 1) {
           switcher.hide();
         }
