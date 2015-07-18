@@ -26,18 +26,22 @@ function masquerade_float_block_page_build(&$page) {
   if ($masquerade_float_block_visible) {
     $block = module_invoke('masquerade', 'block_view', 'masquerade');
     if (!empty($block)) {
-      drupal_add_library('system', 'drupal.ajax');
-      drupal_add_library('system', 'ui.dialog');
-      drupal_add_library('system', 'effects');
-      drupal_add_library('system', 'jquery.cookie');
+
+      $main = &$page['content']['system_main']['main'];
+      $main['#attached']['library'][] = array('system', 'drupal.ajax');
+      $main['#attached']['library'][] = array('system', 'ui.dialog');
+      $main['#attached']['library'][] = array('system', 'effects');
+      $main['#attached']['library'][] = array('system', 'jquery.cookie');
 
       $block['content'] = drupal_render($block['content']);
 
       $data = array(
         'masquerade_float_block' => array('block' => $block)
       );
-      drupal_add_js($data, 'setting');
-      drupal_add_js(drupal_get_path('module', 'masquerade_float_block') . '/masquerade_float_block.js');
+
+      $main['#attached']['js'][] = array('data' => $data, 'type' => 'setting');
+      $js_path = drupal_get_path('module', 'masquerade_float_block') . '/masquerade_float_block.js';
+      $main['#attached']['js'][$js_path] = array();
     }
   }
 }

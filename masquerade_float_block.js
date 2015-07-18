@@ -1,8 +1,45 @@
 (function($) {
 
-  Drupal.behaviors.mfb = {
+  /**
+   * Helper functions
+   *
+   * Compare library versions
+   * @param version1 string
+   *  version1
+   * @param version2 string
+   *   version2
+   * @return
+   *    0 if two params are equal
+   *    1 if the second is lower
+   *   -1 if the second is higher
+   */
+  var versionCompare = function(version1, version2){
+    if (version1 == version2) {
+      return 0;
+    }
+    var v1 = normalize(version1);
+    var v2 = normalize(version2);
+    var len = Math.max(v1.length, v2.length);
+    for (var i = 0; i < len; i++) {
+      v1[i] = v1[i] || 0;
+      v2[i] = v2[i] || 0;
+      if (v1[i] == v2[i]) {
+        continue;
+      }
+      return v1[i] > v2[i] ? 1 : -1;
+    }
+    return 0;
+  };
+
+  function normalize(version){
+    return $.map(version.split('.'), function(value){
+      return parseInt(value, 10);
+    });
+  }
+
+  Drupal.behaviors.masquerade_float_block = {
     attach: function(context, settings) {
-      $('body', context).once('mfb', function() {
+      $('body', context).once('masquerade-float-block', function() {
         var form = settings.masquerade_float_block.block.content;
         var dialog = $('<div />').attr({title: settings.masquerade_float_block.block.subject}).html(settings.masquerade_float_block.block.content);
 
@@ -21,18 +58,25 @@
         var dialog_pos_left = $.cookie('mfb-dialog_pos_left') || 0;
 
         switcher.css({top: switcher_pos_top + 'px', left: switcher_pos_left + 'px'});
+        var dialogPosition = 'center';
+        if (typeof $.ui.version !== 'undefined') {
+          if (versionCompare('1.10', $.ui.version) === 1 || versionCompare('1.10', $.ui.version) === 0) {
+            dialogPosition = [parseInt(dialog_pos_left), parseInt(dialog_pos_top)];
+          }
+          else {
+            dialogPosition = {
+              my: "left+" + dialog_pos_left + " top+" + dialog_pos_top,
+              at: "left top",
+              of: window
+            };
+          }
+        }
 
         dialog.dialog({
           autoOpen: dialog_state == 1 ? true : false,
-          position: {
-            my: "left+" + dialog_pos_left + " top+" + dialog_pos_top,
-            at: "left top",
-            of: window
-          },
-          //position: [dialog_pos_top, dialog_pos_left],
+          position: dialogPosition,
           resizable: false,
           dragStop: function( event, ui ) {
-            console.log(ui);
             $.cookie('mfb-dialog_pos_top', ui.position.top, {path: '/'});
             $.cookie('mfb-dialog_pos_left', ui.position.left, {path: '/'});
           },
