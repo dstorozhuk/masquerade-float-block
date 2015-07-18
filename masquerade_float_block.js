@@ -1,19 +1,28 @@
-(function($) {
+/**
+ * @file
+ * Behaviors for masquerade float block.
+ *
+ * This code initialize masquerade block with jQuery UI.
+ */
+
+(function ($) {
 
   /**
-   * Helper functions
+   * Helper functions.
    *
-   * Compare library versions
+   * Compare library versions.
+   *
    * @param version1 string
    *  version1
    * @param version2 string
    *   version2
+   *
    * @return
    *    0 if two params are equal
    *    1 if the second is lower
    *   -1 if the second is higher
    */
-  var versionCompare = function(version1, version2){
+  var versionCompare = function (version1, version2) {
     if (version1 == version2) {
       return 0;
     }
@@ -31,15 +40,15 @@
     return 0;
   };
 
-  function normalize(version){
-    return $.map(version.split('.'), function(value){
+  function normalize(version) {
+    return $.map(version.split('.'), function (value) {
       return parseInt(value, 10);
     });
   }
 
   Drupal.behaviors.masquerade_float_block = {
-    attach: function(context, settings) {
-      $('body', context).once('masquerade-float-block', function() {
+    attach: function (context, settings) {
+      $('body', context).once('masquerade-float-block', function () {
         var form = settings.masquerade_float_block.block.content;
         var dialog = $('<div />').attr({title: settings.masquerade_float_block.block.subject}).html(settings.masquerade_float_block.block.content);
 
@@ -76,21 +85,21 @@
           autoOpen: dialog_state == 1 ? true : false,
           position: dialogPosition,
           resizable: false,
-          dragStop: function( event, ui ) {
+          dragStop: function (event, ui) {
             $.cookie('mfb-dialog_pos_top', ui.position.top, {path: '/'});
             $.cookie('mfb-dialog_pos_left', ui.position.left, {path: '/'});
           },
           modal: true,
-          close: function( event, ui ) {
+          close: function (event, ui) {
             switcher.show();
             $.cookie('mfb-dialog-state', 0, {path: '/'});
           },
-          open: function( event, ui ) {
+          open: function (event, ui) {
             $.cookie('mfb-dialog-state', 1, {path: '/'});
           },
           buttons: {
-            "Hide": function() {
-              $( this ).dialog( "close" );
+            "Hide": function () {
+              $(this).dialog("close");
               switcher.show();
             }
           }
@@ -100,7 +109,7 @@
         switcher.width(170);
 
         switcher.draggable({
-          stop: function( event, ui ) {
+          stop: function (event, ui) {
             $.cookie('mfb-switcher_pos_top', ui.position.top, {path: '/'});
             $.cookie('mfb-switcher_pos_left', ui.position.left, {path: '/'});
           }
@@ -115,7 +124,7 @@
           switcher.hide();
         }
 
-        switcher.click(function() {
+        switcher.click(function () {
           dialog.dialog('open');
           switcher.hide();
         });
