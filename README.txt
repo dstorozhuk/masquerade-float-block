@@ -15,7 +15,7 @@ block from panel configuration for stage or live environment.
 REQUIREMENTS
 ------------
 This module requires the following modules:
- * Views (https://drupal.org/project/masquerade)
+ * Masquerade (https://drupal.org/project/masquerade)
 
 INSTALLATION
 ------------
