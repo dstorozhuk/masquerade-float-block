@@ -7,8 +7,8 @@ features to export the configuration.
 With this module you don't need to care about removing Masquerade
 block from panel configuration for stage or live environment.
 
- * Initial block position is left top, but it can be changed by dragging the block.
-   Position will be remembered.
+ * Initial block position is left top, but it can be changed by dragging
+   the block. Position will be remembered.
 
  * Block inherits all settings from native Masquerade block.
 
