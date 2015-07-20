@@ -8,7 +8,7 @@
 /**
  * Menu callback.
  *
- * Add the interface to enable/disable
+ * Add admin page for Masquerade float block.
  */
 function masquerade_float_block_admin_page_form($form, &$form_state) {
   $form['masquerade_float_block_visible'] = array(
