@@ -45,3 +45,14 @@ function masquerade_float_block_page_build(&$page) {
     }
   }
 }
+
+/**
+ * Implements hook_help().
+ */
+function masquerade_float_block_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#masquerade_float_block':
+      $output = file_get_contents(drupal_get_path('module', 'masquerade_float_block') . '/README.txt');
+      return '<pre>' . check_plain($output) . '</pre>';
+  }
+}
