@@ -3,3 +3,4 @@ description = This module provides the float masquerade block to switch users
 dependencies[] = masquerade
 package = development
 core = 7.x
+configure = admin/config/people/masquerade/float-block
