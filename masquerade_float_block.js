@@ -49,13 +49,13 @@
   Drupal.behaviors.masquerade_float_block = {
     attach: function (context, settings) {
       $('body', context).once('masquerade-float-block', function () {
-        var form = settings.masquerade_float_block.block.content;
-        var dialog = $('<div />').attr({title: settings.masquerade_float_block.block.subject}).html(settings.masquerade_float_block.block.content);
+        var form = drupalSettings.masquerade_float_block.block.content;
+        var dialog = $('<div />').attr({title: settings.masquerade_float_block.block.subject}).html(form);
 
         var switcher = $('<div />').attr({style: "position: absolute;top:25px;right:0;background-color:black;color:white;cursor:pointer;z-index:999;padding:2px 4px;"});
 
         $(this).append(dialog);
-        Drupal.attachBehaviors(form, settings);
+        Drupal.attachBehaviors(form, drupalSettings);
 
         // 0 - closed.
         // 1 - opened.

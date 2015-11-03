@@ -8,6 +8,9 @@
  * library as well as jQuery.cookies plugin to remember the block position.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\masquerade\Form\MasqueradeForm;
+
 /**
  * Implements hook_menu().
  */
@@ -37,65 +40,49 @@ function masquerade_float_block_menu() {
 }
 
 /**
- * Implements hook_page_alter().
+ * Implements hook_page_attachments_alter().
  */
-function masquerade_float_block_page_alter(&$page) {
-  $get = drupal_get_query_parameters();
-  if (isset($get['mfb_show'])) {
-    if (in_array($get['mfb_show'], array(1, 0))) {
-      variable_set('masquerade_float_block_visible', $get['mfb_show']);
-    }
-    else {
-      drupal_set_message(t('Incorrect mfb_show parameter value: only 1 or 0 possible.'));
-    }
-  }
+function masquerade_float_block_page_attachments_alter(array &$page) {
+  //  $get = drupal_get_query_parameters();
+//  if (isset($get['mfb_show'])) {
+//    if (in_array($get['mfb_show'], array(1, 0))) {
+//      variable_set('masquerade_float_block_visible', $get['mfb_show']);
+//    }
+//    else {
+//      drupal_set_message(t('Incorrect mfb_show parameter value: only 1 or 0 possible.'));
+//    }
+//  }
+//
+//  $masquerade_float_block_visible = variable_get('masquerade_float_block_visible', 1);
 
-  $masquerade_float_block_visible = variable_get('masquerade_float_block_visible', 1);
+  $masquerade_float_block_visible = 1;
 
   if ($masquerade_float_block_visible) {
-    $block = module_invoke('masquerade', 'block_view', 'masquerade');
-    if (!empty($block)) {
-      // Since ['content']['system_main']['main'] sometimes available on later
-      // stage of page build, we use #pre_render function to add a JS.
-      $page['#pre_render'][] = 'masquerade_float_block_add_page_js';
-      $page['#masquerade_float_block'] = $block;
+    // Get the "Masquerade" form errors.
+    //$form_errors = FormStateInterface::getErrors(); // ? how to load form errors.
+    $errors = '';
+    if (isset($form_errors['masquerade_user_field'])) {
+      // Clean up the messages from the main screen and add them to the block.
+      //form_clear_error();
+      drupal_get_messages('error');
+      $errors = '<div class="messages error">' . $form_errors['masquerade_user_field'] . '</div>';
     }
+
+
+    $block = \Drupal\block\Entity\Block::load('masquerade');
+    $block_content = 'TEST';
+    $block_title = 'title';
+
+//  $block_content = \Drupal::entityManager()
+//    ->getViewBuilder('block')
+//    ->view($block);
+//
+//   drupal_render($block_content);
+
+    $page['#attached']['library'][] = 'masquerade_float_block/masquerade-float-block';
+    $page['#attached']['drupalSettings']['masquerade_float_block']['block']['content'] =  $errors . $block_content;
+    $page['#attached']['drupalSettings']['masquerade_float_block']['block']['subject'] = $block_title;
   }
-}
-
-/**
- * Prerender function implementation for hook_page_alter().
- */
-function masquerade_float_block_add_page_js($element) {
-  // Get the "Masquerade" form errors.
-  $form_errors = form_get_errors();
-  $errors = '';
-  if (isset($form_errors['masquerade_user_field'])) {
-    // Clean up the messages from the main screen and add them to the block.
-    form_clear_error();
-    drupal_get_messages('error');
-    $errors = '<div class="messages error">' . $form_errors['masquerade_user_field'] . '</div>';
-  }
-
-  $block_content = $element['#masquerade_float_block'];
-
-  $block_content['content'] = drupal_render($block_content['content']);
-
-  $block_content['content'] = $errors . $block_content['content'];
-
-  $data = array(
-    'masquerade_float_block' => array('block' => $block_content),
-  );
-
-  $main = & $element['content']['system_main']['main'];
-  $main['#attached']['library'][] = array('system', 'ui.dialog');
-  $main['#attached']['library'][] = array('system', 'effects');
-  $main['#attached']['library'][] = array('system', 'jquery.cookie');
-  $main['#attached']['js'][] = array('data' => $data, 'type' => 'setting');
-  $js_path = drupal_get_path('module', 'masquerade_float_block') . '/masquerade_float_block.js';
-  $main['#attached']['js'][$js_path] = array();
-
-  return $element;
 }
 
 /**
