@@ -1,0 +1,11 @@
+masquerade-float-block:
+  version: 1.x
+  js:
+    masquerade_float_block.js: {}
+
+  dependencies:
+    - core/jquery
+    - core/jquery.cookie
+    - core/jquery.ui.dialog
+    - core/jquery.ui.effects.core
+    - core/drupalSettings
