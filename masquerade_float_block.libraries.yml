@@ -5,6 +5,7 @@ masquerade-float-block:
 
   dependencies:
     - core/jquery
+    - core/jquery.once
     - core/jquery.cookie
     - core/jquery.ui.dialog
     - core/jquery.ui.effects.core

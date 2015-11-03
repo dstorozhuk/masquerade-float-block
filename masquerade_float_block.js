@@ -6,6 +6,7 @@
  */
 
 (function ($) {
+  'use strict';
 
   /**
    * Helper functions.
@@ -21,6 +22,7 @@
    *    0 if two params are equal
    *    1 if the second is lower
    *   -1 if the second is higher
+   *   TODO: Do we still need support old versions?
    */
   var versionCompare = function (version1, version2) {
     if (version1 == version2) {
@@ -48,7 +50,8 @@
 
   Drupal.behaviors.masquerade_float_block = {
     attach: function (context, settings) {
-      $('body', context).once('masquerade-float-block', function () {
+      $('body', context).once('masquerade-float-block').each(function () {
+
         var form = drupalSettings.masquerade_float_block.block.content;
         var dialog = $('<div />').attr({title: settings.masquerade_float_block.block.subject}).html(form);
 
