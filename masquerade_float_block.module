@@ -56,7 +56,7 @@ function masquerade_float_block_page_attachments_alter(array &$page) {
 
   if ($visible) {
     // Get the "Masquerade" form errors.
-    //$form_errors = FormStateInterface::getErrors(); // ? how to load form errors.
+//    $form_errors = \Drupal::formBuilder()->FormStateInterface::getErrors(); // ? how to load form errors.
     $errors = '';
     if (isset($form_errors['masquerade_user_field'])) {
       // Clean up the messages from the main screen and add them to the block.
@@ -69,6 +69,7 @@ function masquerade_float_block_page_attachments_alter(array &$page) {
     $block_title = t('Masquerade');
 
     $form = \Drupal::formBuilder()->getForm('Drupal\masquerade\Form\MasqueradeForm');
+
     $render_service = \Drupal::service('renderer');
     $html = $render_service->renderPlain($form);
 
@@ -81,11 +82,10 @@ function masquerade_float_block_page_attachments_alter(array &$page) {
 /**
  * Implements hook_help().
  */
-function masquerade_float_block_help($path, $arg) {
-  switch ($path) {
-    case 'admin/help#masquerade_float_block':
+function masquerade_float_block_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.masquerade_float_block':
       $output = file_get_contents(drupal_get_path('module', 'masquerade_float_block') . '/README.txt');
-
-      return '<pre>' . check_plain($output) . '</pre>';
+      return '<pre>' . ($output) . '</pre>';
   }
 }

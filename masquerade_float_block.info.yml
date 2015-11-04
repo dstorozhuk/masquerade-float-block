@@ -8,5 +8,5 @@ tags:
 
 package: development
 core: 8.x
-configure: admin.float-block
+configure: masquerade_float_block.admin
 type: module
