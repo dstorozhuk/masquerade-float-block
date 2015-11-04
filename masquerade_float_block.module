@@ -40,21 +40,21 @@ function masquerade_float_block_menu() {
  * Implements hook_page_attachments_alter().
  */
 function masquerade_float_block_page_attachments_alter(array &$page) {
-  //  $get = drupal_get_query_parameters();
-//  if (isset($get['mfb_show'])) {
-//    if (in_array($get['mfb_show'], array(1, 0))) {
-//      variable_set('masquerade_float_block_visible', $get['mfb_show']);
-//    }
-//    else {
-//      drupal_set_message(t('Incorrect mfb_show parameter value: only 1 or 0 possible.'));
-//    }
-//  }
-//
-//  $masquerade_float_block_visible = variable_get('masquerade_float_block_visible', 1);
+  $masquerade_float_block_settings = \Drupal::configFactory()->getEditable('masquerade_float_block.settings');
 
-  $masquerade_float_block_visible = 1;
+  if (isset($_GET['mfb_show'])) {
+    if (in_array($_GET['mfb_show'], array(1, 0))) {
+      $masquerade_float_block_settings->set('visible', $_GET['mfb_show']);
+      $masquerade_float_block_settings->save();
+    }
+    else {
+      drupal_set_message(t('Incorrect mfb_show parameter value: only 1 or 0 possible.'), 'error');
+    }
+  }
 
-  if ($masquerade_float_block_visible) {
+  $visible = $masquerade_float_block_settings->get('visible');
+
+  if ($visible) {
     // Get the "Masquerade" form errors.
     //$form_errors = FormStateInterface::getErrors(); // ? how to load form errors.
     $errors = '';
