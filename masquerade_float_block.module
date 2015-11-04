@@ -8,9 +8,6 @@
  * library as well as jQuery.cookies plugin to remember the block position.
  */
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\masquerade\Form\MasqueradeForm;
-
 /**
  * Implements hook_menu().
  */
@@ -69,18 +66,14 @@ function masquerade_float_block_page_attachments_alter(array &$page) {
     }
 
 
-    $block = \Drupal\block\Entity\Block::load('masquerade');
-    $block_content = 'TEST';
-    $block_title = 'title';
+    $block_title = t('Masquerade');
 
-//  $block_content = \Drupal::entityManager()
-//    ->getViewBuilder('block')
-//    ->view($block);
-//
-//   drupal_render($block_content);
+    $form = \Drupal::formBuilder()->getForm('Drupal\masquerade\Form\MasqueradeForm');
+    $render_service = \Drupal::service('renderer');
+    $html = $render_service->renderPlain($form);
 
     $page['#attached']['library'][] = 'masquerade_float_block/masquerade-float-block';
-    $page['#attached']['drupalSettings']['masquerade_float_block']['block']['content'] =  $errors . $block_content;
+    $page['#attached']['drupalSettings']['masquerade_float_block']['block']['content'] =  $errors . $html;
     $page['#attached']['drupalSettings']['masquerade_float_block']['block']['subject'] = $block_title;
   }
 }

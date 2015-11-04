@@ -58,7 +58,7 @@
         var switcher = $('<div />').attr({style: "position: absolute;top:25px;right:0;background-color:black;color:white;cursor:pointer;z-index:999;padding:2px 4px;"});
 
         $(this).append(dialog);
-        Drupal.attachBehaviors(form, drupalSettings);
+        Drupal.attachBehaviors(context, drupalSettings);
 
         // 0 - closed.
         // 1 - opened.
