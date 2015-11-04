@@ -1,0 +1,9 @@
+masquerade_float_block.admin:
+  path: '/admin/config/development/masquerade-float-block'
+  defaults:
+    _form: '\Drupal\masquerade_float_block\Form\MasqueradeFloatBlockForm'
+    _title: 'Masquerade float block settings'
+  options:
+    no_cache: TRUE
+  requirements:
+    _masquerade_switch_access: 'TRUE'
