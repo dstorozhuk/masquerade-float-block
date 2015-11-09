@@ -4,10 +4,8 @@ masquerade-float-block:
     masquerade_float_block.js: {}
 
   dependencies:
-    - core/drupal.autocomplete
-    - core/jquery
     - core/jquery.once
     - core/jquery.cookie
-    - core/jquery.ui.dialog
-    - core/jquery.ui.effects.core
     - core/drupalSettings
+    - core/drupal.dialog
+    - core/drupal.autocomplete
