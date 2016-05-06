@@ -55,7 +55,7 @@
         var form = drupalSettings.masquerade_float_block.block.content;
         var dialog = $('<div />').attr({title: settings.masquerade_float_block.block.subject}).html(form);
 
-        var switcher = $('<div />').attr({style: "position: absolute;top:25px;right:0;background-color:black;color:white;cursor:pointer;z-index:999;padding:2px 4px;"});
+        var switcher = $('<div />').attr({style: "position: absolute;top:25px;right:0;background-color:black;color:white;cursor:pointer;z-index:999;padding:.125em 0;font-family:'Source Sans Pro','Lucida Grande',Verdana,sans-serif;"});
 
         $(this).append(dialog);
         Drupal.attachBehaviors(context, drupalSettings);
@@ -108,8 +108,7 @@
           }
         });
 
-        switcher.height(20);
-        switcher.width(170);
+        switcher.width('12em');
 
         switcher.draggable({
           stop: function (event, ui) {
@@ -120,6 +119,7 @@
 
         var t = Drupal.t;
         switcher.html(t('Show masquerade block'));
+        switcher.prepend('<span style="cursor:move;letter-spacing:-.25em;padding:.25em .5em .25em .125em;">&#8942;&#8942;</span>');
         $(this).append(switcher);
 
         if (dialog_state == 1) {
