@@ -11,34 +11,6 @@
 use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
- * Implements hook_menu().
- */
-function masquerade_float_block_menu() {
-  $items = array();
-  $masquerade_menu = masquerade_menu();
-  $admin_item = $masquerade_menu['admin/config/people/masquerade'];
-  // Use the same permissions as for Masquerade module configuration.
-  $items['admin/config/people/masquerade/float-block'] = array(
-    'title'            => 'Float block',
-    'description'      => 'Enable/disable Masquerade float block',
-    'page callback'    => 'drupal_get_form',
-    'page arguments'   => array('masquerade_float_block_admin_page_form'),
-    'type'             => MENU_LOCAL_TASK,
-    'access arguments' => $admin_item['access arguments'],
-    'file'             => 'masquerade_float_block.admin.inc',
-    'weight'           => 1,
-  );
-  $items['admin/config/people/masquerade/settings'] = array(
-    'title'       => 'Masquerade settings',
-    'description' => 'Enable/disable Masquerade float block',
-    'type'        => MENU_DEFAULT_LOCAL_TASK,
-    'weight'      => 0,
-  );
-
-  return $items;
-}
-
-/**
  * Implements hook_page_attachments_alter().
  */
 function masquerade_float_block_page_attachments_alter(array &$page) {
