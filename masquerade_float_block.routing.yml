@@ -3,7 +3,5 @@ masquerade_float_block.admin:
   defaults:
     _form: '\Drupal\masquerade_float_block\Form\MasqueradeFloatBlockForm'
     _title: 'Masquerade float block settings'
-  options:
-    no_cache: TRUE
   requirements:
-    _masquerade_switch_access: 'TRUE'
+    _permission: 'manage masquerade float block visibility'

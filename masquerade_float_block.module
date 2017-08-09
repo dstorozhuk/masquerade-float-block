@@ -14,41 +14,37 @@ use Drupal\Core\Routing\RouteMatchInterface;
  * Implements hook_page_attachments_alter().
  */
 function masquerade_float_block_page_attachments_alter(array &$page) {
-  $masquerade_float_block_settings = \Drupal::configFactory()->getEditable('masquerade_float_block.settings');
 
-  if (isset($_GET['mfb_show'])) {
-    if (in_array($_GET['mfb_show'], array(1, 0))) {
-      $masquerade_float_block_settings->set('visible', $_GET['mfb_show']);
-      $masquerade_float_block_settings->save();
+  $config = \Drupal::configFactory()->get('masquerade_float_block.settings');
+  $can_switch_block = \Drupal::currentUser()
+    ->hasPermission('manage masquerade float block visibility');
+  $mfb_show = \Drupal::requestStack()->getCurrentRequest()->get('mfb_show');
+  if (!is_null($mfb_show) && $can_switch_block) {
+    if (in_array($mfb_show, [1, 0])) {
+      $config = \Drupal::configFactory()
+        ->getEditable('masquerade_float_block.settings');
+      $config->set('visible', (integer) $mfb_show);
+      $config->save();
     }
     else {
       drupal_set_message(t('Incorrect mfb_show parameter value: only 1 or 0 possible.'), 'error');
     }
   }
+  elseif (!is_null($mfb_show) && !$can_switch_block) {
+    drupal_set_message(t('You have no access to switch the Masquerade Float Block visibility'), 'error');
+  }
 
-  $visible = $masquerade_float_block_settings->get('visible');
+
+  $visible = $config->get('visible');
 
   if ($visible) {
-    // Get the "Masquerade" form errors.
-//    $form_errors = \Drupal::formBuilder()->FormStateInterface::getErrors(); // ? how to load form errors.
-    $errors = '';
-    if (isset($form_errors['masquerade_user_field'])) {
-      // Clean up the messages from the main screen and add them to the block.
-      //form_clear_error();
-      drupal_get_messages('error');
-      $errors = '<div class="messages error">' . $form_errors['masquerade_user_field'] . '</div>';
-    }
-
-
-    $block_title = t('Masquerade');
-
     $form = \Drupal::formBuilder()->getForm('Drupal\masquerade\Form\MasqueradeForm');
-
     $render_service = \Drupal::service('renderer');
     $html = $render_service->renderPlain($form);
+    $block_title = t('Masquerade');
 
     $page['#attached']['library'][] = 'masquerade_float_block/masquerade-float-block';
-    $page['#attached']['drupalSettings']['masquerade_float_block']['block']['content'] =  $errors . $html;
+    $page['#attached']['drupalSettings']['masquerade_float_block']['block']['content'] = $html;
     $page['#attached']['drupalSettings']['masquerade_float_block']['block']['subject'] = $block_title;
   }
 }

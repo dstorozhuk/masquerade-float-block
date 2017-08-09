@@ -36,13 +36,15 @@ Which is located inside the floating Masquerade block.
 
 Also, you can control appearing of the Masquerade block in three ways:
 
- * With admin UI: navigate to admin/config/people/masquerade/float-block
-   (People > Masquerade > Float block) , enable or disable float block.
+ * With admin UI: navigate to /admin/config/development/masquerade-float-block
+   (Configuration > Development > Masquerade Float Block) , enable or disable
+   float block with chekbox.
  * Pass the ?mfb_show parameter in GET request to 1 or 0
      ex.: http://site.com?mfb_show=1 - enable Masquerade block
     - 1 enable Masquerade block on all pages
     - 0 disable Masquerade block on all pages
- * Set the "masquerade_float_block_visible" variable to 1 or 0.
-    ex.: variable_set('masquerade_float_block_visible', 1) - enable Masquerade
-    block in settings.php:
-       $cong['masquerade_float_block_visible'] = 0 - disable Masquerade block
+ * In settings.php:
+     $config['masquerade_float_block.settings']['visible'] = 0;
+       - Masquerade block disabled
+     $config['masquerade_float_block.settings']['visible'] = 1;
+       - Masquerade block enabled

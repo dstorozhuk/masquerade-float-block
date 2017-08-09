@@ -1,11 +1,11 @@
 /**
  * @file
- * Behaviors for masquerade float block.
+ * Behaviors for Masquerade Float Block.
  *
  * This code initialize masquerade block with jQuery UI.
  */
 
-(function ($) {
+(function ($, Drupal, drupalSettings) {
   'use strict';
 
   /**
@@ -49,18 +49,18 @@
   }
 
   Drupal.behaviors.masquerade_float_block = {
-    attach: function (context, settings) {
+    attach: function (context) {
       $('body', context).once('masquerade-float-block').each(function () {
         var t = Drupal.t;
         var form = drupalSettings.masquerade_float_block.block.content;
-        var dialog = $('<div />').attr({
-          title: settings.masquerade_float_block.block.subject,
+        var $dialog = $('<div />').attr({
+          title: drupalSettings.masquerade_float_block.block.subject,
           class: 'ui-corner-all'
           }).html(form);
 
         var switcher = $('<div />').attr({style: "position: absolute;top:25px;right:0;background-color:black;color:white;cursor:pointer;z-index:999;padding:.125em 0;font-family:'Source Sans Pro','Lucida Grande',Verdana,sans-serif;"});
 
-        $(this).append(dialog);
+        $(this).append($dialog);
 
         // 0 - closed.
         // 1 - opened.
@@ -87,7 +87,7 @@
         }
 
         var dialogOptions = {
-          autoOpen: dialog_state == 1 ? true : false,
+          autoOpen: dialog_state == 1,
           position: dialogPosition,
           resizable: false,
           dragStop: function (event, ui) {
@@ -108,10 +108,10 @@
               switcher.show();
             }
           }
-        }
+        };
 
-        dialog.dialog(dialogOptions);
-        Drupal.attachBehaviors(dialog, settings);
+        $dialog.dialog(dialogOptions);
+        Drupal.behaviors.autocomplete.attach($dialog, drupalSettings);
 
         switcher.width('12em');
 
@@ -131,7 +131,7 @@
         }
 
         switcher.click(function () {
-          dialog.dialog('open');
+          $dialog.dialog('open');
           switcher.hide();
         });
 
@@ -139,4 +139,4 @@
     }
   };
 
-})(jQuery);
+})(jQuery, Drupal, drupalSettings);
